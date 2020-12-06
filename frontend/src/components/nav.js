@@ -25,7 +25,7 @@ const Nav = () => (
             <div className="uk-navbar-left">
               <ul className="uk-navbar-nav">
                 <li>
-                  <Link to="/">{data.strapiGlobal.siteName}</Link>
+                  <Link to="/">Home</Link>
                 </li>
               </ul>
             </div>
@@ -34,14 +34,24 @@ const Nav = () => (
                 className="uk-button uk-button-default uk-margin-right"
                 type="button"
               >
-                Categories
+                Navigation
               </button>
               <div uk-dropdown="animation: uk-animation-slide-top-small; duration: 1000">
                 <ul className="uk-nav uk-dropdown-nav">
+                <li key={`about_me`}>
+                      <Link to={`/about_me`}>
+                        About Me
+                      </Link>
+                    </li>
+                    <li key={`contact`}>
+                      <Link to={`/contact`}>
+                        Get In Touch
+                      </Link>
+                    </li>
                   {data.allStrapiCategory.edges.map((category, i) => (
                     <li key={`category__${category.node.slug}`}>
                       <Link to={`/category/${category.node.slug}`}>
-                        {category.node.name}
+                        Writing - {category.node.name}
                       </Link>
                     </li>
                   ))}

@@ -2,6 +2,7 @@ require("dotenv").config({
     path: `.env`,
 });
 
+
 module.exports = {
     plugins: [
         "gatsby-plugin-react-helmet",
@@ -11,11 +12,18 @@ module.exports = {
                 name: `images`,
                 path: `${__dirname}/src/images`,
             },
+        }, {
+            resolve: `gatsby-plugin-s3`,
+            options: {
+                bucketName: "jakes-blog-gatsby",
+                protocol: "https",
+                hostname: "www.jacoblynch.co",
+            },
         },
         {
             resolve: "gatsby-source-strapi",
             options: {
-                apiURL: process.env.API_URL || "http://localhost:1337",
+                apiURL: process.env.API_URL,
                 contentTypes: ["article", "category", "writer"],
                 singleTypes: [`homepage`, `global`],
                 queryLimit: 1000,

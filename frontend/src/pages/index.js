@@ -3,6 +3,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import Layout from "../components/layout";
 import ArticlesComponent from "../components/articles";
 import "../assets/css/main.css";
+import{ TwitterIcon } from "react-social-icons";
 
 const IndexPage = () => {
   const data = useStaticQuery(query);
@@ -12,6 +13,7 @@ const IndexPage = () => {
       <div className="uk-section">
         <div className="uk-container uk-container-large">
           <h1>{data.strapiHomepage.hero.title}</h1>
+          <TwitterIcon url="www.twitter.com/_jake_lynch" />
           <ArticlesComponent articles={data.allStrapiArticle.edges} />
         </div>
       </div>

@@ -33,6 +33,51 @@ exports.createPages = async({ graphql, actions }) => {
             },
         });
     });
+
+    const AboutMe = require.resolve("./src/templates/aboutme.js");
+
+    createPage({
+        path: `/about_me`,
+        component: AboutMe,
+    })
+
+    const ContactMe = require.resolve("./src/templates/contact.js");
+
+    createPage({
+        path: `/contact`,
+        component: ContactMe,
+    })
+
+    const response = await graphql(
+        `
+        {
+          categories: allStrapiCategory{
+            edges {
+              node {
+                strapiId
+                name
+                slug
+              }
+            }
+          }
+        }
+      `
+    );
+    // Create blog articles pages.
+    const categories = response.data.categories.edges
+
+    const CategoryTemplate = require.resolve("./src/templates/category.js");
+
+    categories.forEach((category, index) => {
+        createPage({
+            path: `/category/${category.node.name}`,
+            component: CategoryTemplate,
+            context: {
+                slug: category.node.slug,
+            },
+        });
+    });
+
 };
 
 module.exports.onCreateNode = async({ node, actions, createNodeId }) => {
