@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "gatsby";
-import Img from "gatsby-image";
+import React from "react"
+import { Link } from "gatsby"
+import Img from "gatsby-image"
 
 const Card = ({ article }) => {
   return (
@@ -14,7 +14,7 @@ const Card = ({ article }) => {
         </div> */}
         <div className="uk-card-body">
           <p id="category" className="uk-text-uppercase">
-            {article.node.category.name} -  {article.node.title}
+            {article.node.category.name} - {article.node.title}
           </p>
           {/* <div>
             <hr className="uk-divider-small" />
@@ -37,7 +37,7 @@ const Card = ({ article }) => {
         </div>
       </div>
     </Link>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card

@@ -1,25 +1,24 @@
-import React from "react";
-import { graphql, useStaticQuery } from "gatsby";
-import Layout from "../components/layout";
-import ArticlesComponent from "../components/articles";
-import "../assets/css/main.css";
-import{ TwitterIcon } from "react-social-icons";
+import React from "react"
+import { graphql, useStaticQuery } from "gatsby"
+import Layout from "../components/layout"
+import ArticlesComponent from "../components/articles"
+import "../assets/css/main.css"
+import { FaTwitter } from "react-icons/fa"
 
 const IndexPage = () => {
-  const data = useStaticQuery(query);
+  const data = useStaticQuery(query)
 
   return (
     <Layout seo={data.strapiHomepage.seo}>
       <div className="uk-section">
         <div className="uk-container uk-container-large">
           <h1>{data.strapiHomepage.hero.title}</h1>
-          <TwitterIcon url="www.twitter.com/_jake_lynch" />
           <ArticlesComponent articles={data.allStrapiArticle.edges} />
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
 const query = graphql`
   query {
@@ -65,6 +64,6 @@ const query = graphql`
       }
     }
   }
-`;
+`
 
-export default IndexPage;
+export default IndexPage

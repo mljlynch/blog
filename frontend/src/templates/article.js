@@ -1,9 +1,9 @@
-import React from "react";
-import { graphql } from "gatsby";
-import Img from "gatsby-image";
-import Moment from "react-moment";
-import Layout from "../components/layout";
-import Markdown from "react-markdown";
+import React from "react"
+import { graphql } from "gatsby"
+import Img from "gatsby-image"
+import Moment from "react-moment"
+import Layout from "../components/layout"
+import Markdown from "react-markdown"
 
 export const query = graphql`
   query ArticleQuery($slug: String!) {
@@ -33,16 +33,16 @@ export const query = graphql`
       }
     }
   }
-`;
+`
 
 const Article = ({ data }) => {
-  const article = data.strapiArticle;
+  const article = data.strapiArticle
   const seo = {
     metaTitle: article.title,
     metaDescription: article.description,
     shareImage: article.image,
     article: true,
-  };
+  }
 
   return (
     <Layout seo={seo}>
@@ -55,8 +55,9 @@ const Article = ({ data }) => {
           data-uk-img
         >
         </div> */}
-        <div className="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-padding uk-margin"
-><h1>{article.title}</h1></div>
+        <div className="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-padding uk-margin">
+          <h1>{article.title}</h1>
+        </div>
 
         <div className="uk-section">
           <div className="uk-container uk-container-small">
@@ -86,7 +87,7 @@ const Article = ({ data }) => {
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Article;
+export default Article

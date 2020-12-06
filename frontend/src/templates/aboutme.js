@@ -1,7 +1,7 @@
-import React from "react";
-import { graphql } from "gatsby";
-import ArticlesComponent from "../components/articles";
-import Layout from "../components/layout";
+import React from "react"
+import { graphql } from "gatsby"
+import ArticlesComponent from "../components/articles"
+import Layout from "../components/layout"
 
 // export const query = graphql`
 //   query Category($slug: String!) {
@@ -45,18 +45,20 @@ const AboutMe = () => {
   const seo = {
     metaTitle: "about me",
     metaDescription: `Jake's about me page`,
-  };
+  }
 
   return (
     <Layout seo={seo}>
       <div className="uk-section">
         <div className="uk-container uk-container-large">
           <h1>About Me</h1>
-          <p>Hi! I'm Jake</p>
+          {/* TODO: @mljlynch to write up a description of ME - myself */}
+          <p>Hi! I'm Jake.</p>
+          {/* TODO: Add photo */}
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default AboutMe;
+export default AboutMe

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, StaticQuery, graphql } from "gatsby";
+import React from "react"
+import { Link, StaticQuery, graphql } from "gatsby"
 
 const Nav = () => (
   <StaticQuery
@@ -18,7 +18,7 @@ const Nav = () => (
         }
       }
     `}
-    render={(data) => (
+    render={data => (
       <div>
         <div>
           <nav className="uk-navbar-container" data-uk-navbar>
@@ -38,16 +38,12 @@ const Nav = () => (
               </button>
               <div uk-dropdown="animation: uk-animation-slide-top-small; duration: 1000">
                 <ul className="uk-nav uk-dropdown-nav">
-                <li key={`about_me`}>
-                      <Link to={`/about_me`}>
-                        About Me
-                      </Link>
-                    </li>
-                    <li key={`contact`}>
-                      <Link to={`/contact`}>
-                        Get In Touch
-                      </Link>
-                    </li>
+                  <li key={`about_me`}>
+                    <Link to={`/about_me`}>About Me</Link>
+                  </li>
+                  <li key={`contact`}>
+                    <Link to={`/contact`}>Get In Touch</Link>
+                  </li>
                   {data.allStrapiCategory.edges.map((category, i) => (
                     <li key={`category__${category.node.slug}`}>
                       <Link to={`/category/${category.node.slug}`}>
@@ -63,6 +59,6 @@ const Nav = () => (
       </div>
     )}
   />
-);
+)
 
-export default Nav;
+export default Nav
