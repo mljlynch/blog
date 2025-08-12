@@ -42,3 +42,7 @@ We have a number of tricky FlatLists where we render a lot of SVGs as logos. The
 ## 3. Images not being optimized for production.
 
 When you load many images from the API, they cache and can hog a lot of data in the app. If you are not properly virtualizing your list, they can persist in App Memory for a long time. FlatLists should out-of-the-box remove items from the component tree that are no longer in view. However, by default, it renders 10 list lengths above and below. You can modify the property `initialNumToRender` if you want to render less items initially.
+
+## 4. Changing state on scroll
+
+This seems like a dumb mistake in retrospect, but we had a screen on our app where we were setting the scroll height in state. This lead to the screen rerendering on scroll which lowered JS framerate to a crawl. The solution was to only update the state when the scroll height passed certain thresholds - in our case, there was one scroll height threshold we wanted to track.
