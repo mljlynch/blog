@@ -3,6 +3,7 @@ title: The Pernicious "The OS Watchdog Terminated Your App"
 date: 2025-08-10
 tags:
   - React Native
+  - Performance
 ---
 
 Our app has been experiencing mysterious issues related to `The OS watchdog terminated your app, possibly because it overused RAM.` We've been spending some time debugging and I wanted to document a few links that I found helpful, since there is not a lot of good content on the internet.
@@ -46,3 +47,7 @@ When you load many images from the API, they cache and can hog a lot of data in 
 ## 4. Changing state on scroll
 
 This seems like a dumb mistake in retrospect, but we had a screen on our app where we were setting the scroll height in state. This lead to the screen rerendering on scroll which lowered JS framerate to a crawl. The solution was to only update the state when the scroll height passed certain thresholds - in our case, there was one scroll height threshold we wanted to track.
+
+## 5. Third-party libraries
+
+As a small start-up, we use a number of third-party libraries to build more quickly. This allows us to iterate more quickly and abstract things for our non-technical, or lightly technical teammates (our marketing guy has been known to script things). However, if these tools don't have the proper guard rails, they can load a lot of data into the app. Particular attention should be paid to anything that loads image or video content as those files are typically larger in size and need to be optimized.
