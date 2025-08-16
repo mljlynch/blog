@@ -6,6 +6,8 @@ tags:
   - Performance
 ---
 
+import Comments from "components/Comments";
+
 Our app has been experiencing mysterious issues related to `The OS watchdog terminated your app, possibly because it overused RAM.` We've been spending some time debugging and I wanted to document a few links that I found helpful, since there is not a lot of good content on the internet.
 
 # What does this issue even mean?
@@ -68,3 +70,7 @@ I spent a few hours playing around the app to identify the screens where the fra
 ## Work with the third-party tools to debug memory usage
 
 Often SAAS tools have opinionated support and can help with best practices. In our case, they were able to quickly look at our usage and recommend improved file types (such as webp images) along with more specific patterns for low memory devices.
+
+What do you think? Comment below ⬇️
+
+<Comments />
