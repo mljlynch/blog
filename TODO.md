@@ -1,4 +1,3 @@
-- [ ] Change master -> main branch
 - [ ] Update Favicon
 - [ ] Add PR template
 - [ ] Add a blog on how I built this blog
