@@ -3,7 +3,6 @@ import React from "react";
 const About: React.FC = () => {
   return (
     <div>
-      {/* Profile section */}
       <div
         style={{
           flexDirection: "row",
@@ -37,7 +36,10 @@ const About: React.FC = () => {
           >
             Fig
           </a>{" "}
-          where I'm a cofounder and CTO.
+          where I'm a co-founder and CTO. I also am a fellow in the Aspen
+          Institute's Food Fellowship program. I'm passionate about building
+          things that help people. In particular, I want to build a better food
+          system so that all people can live healthy, enjoyable lives.
         </div>
       </div>
     </div>
