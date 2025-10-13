@@ -1,3 +1,3 @@
-- [ ] Update Favicon
 - [ ] Add PR template
 - [ ] Add a blog on how I built this blog
+- [ ] Update Preview image
