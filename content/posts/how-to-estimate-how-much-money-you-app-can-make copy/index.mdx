@@ -1,0 +1,88 @@
+---
+title: How to estimate how much money your app can make
+date: 2025-09-05
+tags:
+  - Business
+---
+
+import Comments from "components/Comments";
+
+There is a simple formula for estimating how much money your app will make in the fullness of time:
+
+Where:
+
+- N = New Users
+- T = Trial Start Rate
+- C = Trial Conversion Rate
+- P = Price
+- R = Retention Rate
+
+```
+Revenue = N × T × C × P × (1 ÷ (1 - R))
+```
+
+Depending on the dynamics of your app, you will need to account for if your subscribers pay for a year or a month. For the purposes of simplicity, let's assume you only have annual subscribers. Maybe it would be helpful to think of some numbers. Let's make some assumptions:
+
+- You have 10000 new users a year
+- You have a 10 % trial start rate
+- You have a 50 % trial conversion rate
+- The price of your app is $50 / year
+- 25% of your users pay for a second year
+
+Then this works out to:
+
+```
+10,000 × 0.1 × 0.5 × $50 × (1 ÷ (1 - 0.25)) = $33,333
+```
+
+Why does this matter? Well it boils down the things to drive your business fairly well. For example - if you double your trial start rate to 20%:
+
+```
+10,000 × 0.2 × 0.5 × $50 × (1 ÷ (1 - 0.25)) = $66,667
+```
+
+But if you double retention:
+
+```
+10,000 × 0.1 × 0.5 × $50 × (1 ÷ (1 - 0.5)) = $50,000
+```
+
+This doesn't mean you shouldn't focus on retention. Retention is important for the value of your app above your revenue, since you won't have to spend marketing dollars to for that additional revenue.
+
+It's important to set up an experimentation library, such as [Statsig](https://statsig.com/), that allows you to measure the impact of changes to each of these values. Here are a few examples of things you can experiment with for each.
+
+# New Users
+
+This is where marketing comes in. You can pay for ads, use organic social media or SEO. Now also there are chat bots such as ChatGPT which are driving a larger percentage of traffic. It's important to diversify the channels your users are coming from to keep costs down over time.
+
+# Trial Start Rate
+
+From my experience, conversion is the easiest item to experiment with. Some examples of things that can be helpful here:
+
+- Allow users to test your app without having to put in an email
+- Reduce the number of steps in your onboarding funnel
+- Add an A-ha! moment that captures why users should pay for your app
+
+# Trial conversion rate
+
+This can be a big value multiple here as well. Here are a few things you can do:
+
+- Have a smooth activation experience to take your users through all the different features of your app.
+- Remind users of the value of your app through push notifications,
+- send reminders when the trial is about to cancel, so they don't feel concerned about spam charges
+
+# Price
+
+Price is important to experiment with. There are many tools now to do price testing, such as [RevenueCat](https://www.revenuecat.com/) or [Superwall](https://superwall.com/). You can run A/B tests on these platforms where you test different prices and see how it impacts trial start rate and conversion. You should pay attention to the entire equation above when playing around with price, to make sure you are not accidentally decreasing total revenue.
+
+# Retention
+
+Retention is hard. In order to have high retention you have to have a product that people love and continue to love. That said, you can do somethings to limit the amount of unnecessary churn. A few things to test here:
+
+- Again, good activation flows are really important because they show the user how to use the app. Usually, there is a moment when users fall in love and develop a habit around your app.
+- A surprising number of users churn because of bad billing information such as invalid or canceled credit cards. The Apple and Google both have subscription management tools that help with this, but it can still be helpful to let users know if their trial is expiring so they can update this information if they didn't intentionally want the subscription to expire.
+- Finally you can offer win-back campaigns with discounts to keep a portion of the revenue for users who are hesitant to keep your app.
+
+I hope people find this helpful. Let me know if you have any questions in the comments below ⬇️
+
+<Comments />
