@@ -28,7 +28,7 @@ const About: React.FC = () => {
           }}
         >
           I'm Jake! I've been traveling for the past year and currently live in
-          Austin, TX. I currently am building{" "}
+          Brooklyn, NY. I currently am building{" "}
           <a
             href="https://www.foodisgood.com"
             target="_blank"
