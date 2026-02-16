@@ -13,6 +13,7 @@ Personal technical blog built with Gatsby, using the @lekoarts/gatsby-theme-mini
 npm run develop
 # or
 npm start
+# Note: If port 8000 is in use, add -- -p 8001 to use alternate port
 
 # Build for production (cleans cache first, uses prefix-paths for deployment)
 npm run build
@@ -32,6 +33,7 @@ This project uses [Gatsby theme shadowing](https://www.gatsbyjs.com/docs/how-to/
 
 Currently shadowed:
 - `src/@lekoarts/gatsby-theme-minimal-blog/texts/` - Hero, about, and bottom text sections
+- `src/@lekoarts/gatsby-theme-minimal-blog/components/footer.tsx` - Custom footer with author attribution
 
 ### Content Structure
 
@@ -93,6 +95,13 @@ All site metadata and plugin configuration lives in `gatsby-config.ts`:
 
 ## Creating New Blog Posts
 
+Use the `/new-post` skill for automated post creation, which will:
+- Prompt for title, slug, and tags
+- Create the directory structure
+- Generate index.mdx with proper frontmatter
+- Include the Comments component
+
+Manual steps:
 1. Create a new directory: `content/posts/[slug]/`
 2. Add `index.mdx` with frontmatter (title, date, tags)
 3. Co-locate any images in the same directory
@@ -107,3 +116,14 @@ To override any component or section from the minimal-blog theme:
 3. Add your customized version
 
 Example: To override the blog listing template, create `src/@lekoarts/gatsby-theme-minimal-blog/components/blog-list-item.tsx`
+
+## Git Workflow
+
+- **Always push after committing** - User preference is to push all commits to remote immediately
+- Repository: `https://github.com/mljlynch/blog.git`
+
+## Deployment
+
+- Hosted on Netlify
+- Automatically deploys on push to main branch
+- Build command: `npm run build`
