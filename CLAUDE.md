@@ -90,8 +90,10 @@ Path mapping in tsconfig.json: `"components/*": ["src/components/*"]`
 All site metadata and plugin configuration lives in `gatsby-config.ts`:
 - Site title, description, URL
 - Navigation links
-- External social links
+- External social links — add to `externalLinks` array in the `@lekoarts/gatsby-theme-minimal-blog` plugin options; no theme shadowing needed
 - Plugin options (sitemap, manifest, feed)
+
+Note: The RSS feed (`/rss.xml`) only generates during `npm run build`, not `npm run develop`. Clicking it in dev will 404 — this is expected.
 
 ## Creating New Blog Posts
 
