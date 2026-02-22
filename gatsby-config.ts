@@ -43,6 +43,10 @@ const config: GatsbyConfig = {
             name: `GitHub`,
             url: `https://github.com/mljlynch`,
           },
+          {
+            name: `RSS`,
+            url: `/rss.xml`,
+          },
         ],
       },
     },
