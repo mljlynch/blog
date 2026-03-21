@@ -8,13 +8,13 @@ tags:
 
 import Comments from "components/Comments";
 
-There have been a few recent twitter threads from the Claude Code team highlight the value of skills. The main one I found useful was [@trq212's post](https://x.com/trq212/status/2033949937936085378). We have started using skills at Fig to be more prescriptive about the way the team interacts with Claude.
+There have been a few recent Twitter threads from the Claude Code team highlighting the value of skills. The main one I found useful was [@trq212's post](https://x.com/trq212/status/2033949937936085378). We have started using skills at Fig to be more prescriptive about the way the team interacts with Claude.
 
 ## Useful skills
 
 ### /create-pr and /respond-to-pr
 
-Github has been very slow and [prone to downtime](https://x.com/ThePrimeagen/status/2021973615701627002?s=20) recently, so we created skills to interact with pull requests from Claude. The first is `/create-pr` which specifies the set of steps and tool calls for opening a PR. The first cool part about skills is Claude can bootstrap them for you pretty easily and then you can iterate from there. So when I find myself repeating tasks in Claude Code, at the end of the session I ask Claude to output a skill for me based on the steps. The other cool aspect of skills is that it allows you to specify which tools claude uses so it stays more focused.
+Github has been very slow and [prone to downtime](https://x.com/ThePrimeagen/status/2021973615701627002?s=20) recently, so we created skills to interact with pull requests from Claude. The first is `/create-pr` which specifies the set of steps and tool calls for opening a PR. The first cool part about skills is that Claude can bootstrap them for you pretty easily and then you can iterate from there. So when I find myself repeating tasks in Claude Code, at the end of the session I ask Claude to output a skill for me based on the steps. The other cool aspect of skills is that it allows you to specify which tools Claude uses so it stays more focused.
 
 Here is the full text of this skill:
 
@@ -78,7 +78,7 @@ $ARGUMENTS
 
 ````
 
-`respond-to-pr` is similar except it focuses more the plan -> action loop where it takes a set of comments on a PR and generates a plan to action them. This allows you to pull the comments into context and then fine tune responses. Initially, I had claude immediately respond to feedback, but often, I wanted to finetune the responses. I also specify conventions like including commit hashes in the comments so they are easier to inspect.
+`respond-to-pr` is similar except it focuses more on the plan -> action loop where it takes a set of comments on a PR and generates a plan to action them. This allows you to pull the comments into context and then fine-tune responses. Initially, I had claude immediately respond to feedback, but often, I wanted to fine-tune the responses. I also specify conventions like including commit hashes in the comments so they are easier to inspect.
 
 ```md
 ---
@@ -161,18 +161,18 @@ $ARGUMENTS
 
 ```
 
-Again Claude generates the template skill and then I fine tune over time. For example, it was including the hashes in "`" which was causing the autolink to not work properly.
+Again Claude generates the template skill and then I fine-tune over time. For example, it was including the hashes in "`" which was causing the autolink to not work properly.
 
 
 ## Challenges with Skills
 
-There have been a few challenges with skills. Sometimes the skills can be invoked too frequently which can be annoying and you have to modify the skill text to fine tune when they are included.
+There have been a few challenges with skills. Sometimes the skills can be invoked too frequently which can be annoying and you have to modify the skill text to fine-tune when they are included.
 
 Sharing skills can also be tricky, but many companies are setting up repos or marketplaces to share skills on company workspaces. We also have one developer who uses Cursor and we have not found a good framework for providing interoperability between Claude and Cursor skills.
 
 ## Claude vs. Cursor
 
-I'm of the opinion that developers should control their own work flows and we should not be prescriptive about which tooling developers use. However, eventually, there is a cost with this and we are actively debating if we should enforce one or the other.
+I'm of the opinion that developers should control their own workflows and we should not be prescriptive about which tooling developers use. However, eventually, there is a cost with this and we are actively debating if we should enforce one or the other.
 
 How do you use Claude Code and skills? Add suggestions below!
 
