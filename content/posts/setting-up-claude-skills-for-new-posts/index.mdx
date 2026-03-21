@@ -1,0 +1,180 @@
+---
+title: Setting up Claude Skills
+date: 2026-03-21
+tags:
+  - Claude-Code
+  - AI
+---
+
+import Comments from "components/Comments";
+
+There have been a few recent twitter threads from the Claude Code team highlight the value of skills. The main one I found useful was [@trq212's post](https://x.com/trq212/status/2033949937936085378). We have started using skills at Fig to be more prescriptive about the way the team interacts with Claude.
+
+## Useful skills
+
+### /create-pr and /respond-to-pr
+
+Github has been very slow and [prone to downtime](https://x.com/ThePrimeagen/status/2021973615701627002?s=20) recently, so we created skills to interact with pull requests from Claude. The first is `/create-pr` which specifies the set of steps and tool calls for opening a PR. The first cool part about skills is Claude can bootstrap them for you pretty easily and then you can iterate from there. So when I find myself repeating tasks in Claude Code, at the end of the session I ask Claude to output a skill for me based on the steps. The other cool aspect of skills is that it allows you to specify which tools claude uses so it stays more focused.
+
+Here is the full text of this skill:
+
+```md
+---
+name: create-pr
+description: Use when the user wants to create a pull request, or complete the full PR lifecycle (stage, commit, push, open PR). Executes immediately without deliberating on naming or asking unnecessary questions.
+disable-model-invocation: false
+allowed-tools: Bash, Read, Glob, Grep
+---
+
+Execute the full PR lifecycle immediately and directly. Do NOT deliberate on naming conventions, restructuring, or offer unsolicited opinions — just do it.
+
+## Steps
+
+1. **Check state**: Run `git status` and `git diff` in parallel to understand what's changed. Also run `git log --oneline -5` to match the repo's commit message style.
+
+2. **Stage changes**: Add specific changed files by name (avoid `git add -A` unless everything is intentional).
+
+3. **Commit**: Write a concise commit message based on the diff. Follow the repo's existing style. Pass via HEREDOC:
+```
+
+git commit -m "$(cat <<'EOF'
+
+   <message>
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+EOF
+)"
+
+```
+
+4. **Push**: Push to the current branch with `-u` if not yet tracking a remote.
+
+5. **Create draft PR**: Use the repo's `.github/pull_request_template.md` if it exists. Create a draft PR:
+
+```
+
+gh pr create --draft --title "<title>" --body "$(cat <<'EOF'
+
+   <body from template>
+   EOF
+   )"
+   ```
+
+- Keep title under 70 characters
+- Use Semantic PR format if `.github/semantic.yml` exists
+- Fill in the body based on the diff and commit history
+
+6. **Return the PR URL** so the user can see it.
+
+## Rules
+
+- Execute immediately — no deliberating on names or asking about things you can infer from context
+- If there are no changes to commit, say so and skip to PR creation if a branch already has commits
+- Never skip hooks (`--no-verify`) unless explicitly asked
+- Never force-push unless explicitly asked
+- If `$ARGUMENTS` is provided, treat it as additional context or instructions (e.g., a PR title hint, a Linear issue number to link, or specific files to stage)
+
+$ARGUMENTS
+
+````
+
+`respond-to-pr` is similar except it focuses more the plan -> action loop where it takes a set of comments on a PR and generates a plan to action them. This allows you to pull the comments into context and then fine tune responses. Initially, I had claude immediately respond to feedback, but often, I wanted to finetune the responses. I also specify conventions like including commit hashes in the comments so they are easier to inspect.
+
+```md
+---
+name: respond-to-pr
+description: Use when the user wants to respond to PR review comments. Follows a plan → code changes → reply cycle - read all comments, group them by type (deferred/answer-only/needs-code), make code changes first, then reply to every comment referencing the commit if applicable.
+disable-model-invocation: false
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+---
+
+Respond to all open review comments on the current branch's PR. Follow the plan → action → respond cycle exactly.
+
+## Step 1 — Plan
+
+Fetch all review comments and build a plan before touching anything:
+
+```bash
+gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pulls/<PR>/comments \
+  --jq '.[] | {id: .id, path: .path, line: .line, body: .body}'
+````
+
+Group each comment into one of three buckets:
+
+| Bucket          | Description                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| **deferred**    | Valid point, but intentionally out of scope for this PR — acknowledge and defer to a follow-up |
+| **answer-only** | Question that needs a verbal reply but no code change                                          |
+| **needs-code**  | Requires a code change; reply after the fix, referencing the commit SHA                        |
+
+Output the plan to the user before proceeding.
+
+## Step 2 — Code changes
+
+- Make all `needs-code` changes first, in a single logical commit if possible
+- Stage specific files by name; never `git add -A`
+- Commit via HEREDOC:
+
+  ```
+  git commit -m "$(cat <<'EOF'
+  <message>
+
+  Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+  EOF
+  )"
+  ```
+
+- Push immediately after committing
+- Note the commit SHA — you'll need it for replies
+
+## Step 3 — Reply to every comment
+
+Reply to **all** comments, even answer-only and deferred ones. Use the GitHub API:
+
+```bash
+gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pulls/<PR>/comments/<ID>/replies \
+  -f body="<reply>"
+```
+
+Reply templates by bucket:
+
+- **deferred**: Acknowledge the concern and name the follow-up action.
+  e.g. _"Good call — we'll switch to `data \"aws_cloudfront_distribution\"` lookups in a follow-up PR."_
+
+- **answer-only**: Answer the question directly and concisely.
+
+- **needs-code**: Confirm what was changed and include the short commit SHA.
+  e.g. _"Added `aws_s3_bucket_public_access_block` with all flags `false` to match actual AWS state — fixed in abc1234."_
+
+Post all replies in parallel where the API allows.
+
+## Rules
+
+- Never reply before the code change is committed and pushed — the SHA must be real
+- Reply to every comment, not just the ones requiring code changes
+- If `$ARGUMENTS` specifies a PR number, use it; otherwise detect from the current branch with `gh pr view --json number -q .number`
+- Do not skip comments or bundle multiple questions into a single reply unless they are truly the same thread
+- Keep replies concise — one to three sentences
+- Write commit SHAs bare (e.g. `abc1234`), never wrapped in backticks — GitHub autolinks bare SHAs but not inline code
+
+$ARGUMENTS
+
+```
+
+Again Claude generates the template skill and then I fine tune over time. For example, it was including the hashes in "`" which was causing the autolink to not work properly.
+
+
+## Challenges with Skills
+
+There have been a few challenges with skills. Sometimes the skills can be invoked too frequently which can be annoying and you have to modify the skill text to fine tune when they are included.
+
+Sharing skills can also be tricky, but many companies are setting up repos or marketplaces to share skills on company workspaces. We also have one developer who uses Cursor and we have not found a good framework for providing interoperability between Claude and Cursor skills.
+
+## Claude vs. Cursor
+
+I'm of the opinion that developers should control their own work flows and we should not be prescriptive about which tooling developers use. However, eventually, there is a cost with this and we are actively debating if we should enforce one or the other.
+
+How do you use Claude Code and skills? Add suggestions below!
+
+<Comments />
+```

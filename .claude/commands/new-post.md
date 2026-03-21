@@ -14,7 +14,7 @@ When this skill is invoked, follow these steps:
 1. **Gather information** - Ask the user for:
    - Post title (required)
    - Post slug (suggest a kebab-case version of the title, but let user override)
-   - Tags (comma-separated, optional)
+   - Tags (comma-separated, optional) — if the user says "generate tags" or similar, suggest 3–5 relevant tags based on the post title and ask for confirmation before using them
    - Whether to include comments (default: yes)
 
 2. **Create directory structure**:
