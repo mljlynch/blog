@@ -18,7 +18,7 @@ Github has been very slow and [prone to downtime](https://x.com/ThePrimeagen/sta
 
 Here is the full text of this skill:
 
-```md
+````md
 ---
 name: create-pr
 description: Use when the user wants to create a pull request, or complete the full PR lifecycle (stage, commit, push, open PR). Executes immediately without deliberating on naming or asking unnecessary questions.
@@ -35,11 +35,12 @@ Execute the full PR lifecycle immediately and directly. Do NOT deliberate on nam
 2. **Stage changes**: Add specific changed files by name (avoid `git add -A` unless everything is intentional).
 
 3. **Commit**: Write a concise commit message based on the diff. Follow the repo's existing style. Pass via HEREDOC:
+
 ```
 
 git commit -m "$(cat <<'EOF'
 
-   <message>
+\<message\>
 
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 EOF
@@ -51,14 +52,11 @@ EOF
 
 5. **Create draft PR**: Use the repo's `.github/pull_request_template.md` if it exists. Create a draft PR:
 
-```
+gh pr create --draft --title "\<title\>" --body "$(cat <<'EOF'
 
-gh pr create --draft --title "<title>" --body "$(cat <<'EOF'
-
-   <body from template>
-   EOF
-   )"
-   ```
+\<body from template\>
+EOF
+)"
 
 - Keep title under 70 characters
 - Use Semantic PR format if `.github/semantic.yml` exists
@@ -75,12 +73,11 @@ gh pr create --draft --title "<title>" --body "$(cat <<'EOF'
 - If `$ARGUMENTS` is provided, treat it as additional context or instructions (e.g., a PR title hint, a Linear issue number to link, or specific files to stage)
 
 $ARGUMENTS
-
 ````
 
 `respond-to-pr` is similar except it focuses more on the plan -> action loop where it takes a set of comments on a PR and generates a plan to action them. This allows you to pull the comments into context and then fine-tune responses. Initially, I had claude immediately respond to feedback, but often, I wanted to fine-tune the responses. I also specify conventions like including commit hashes in the comments so they are easier to inspect.
 
-```md
+````md
 ---
 name: respond-to-pr
 description: Use when the user wants to respond to PR review comments. Follows a plan → code changes → reply cycle - read all comments, group them by type (deferred/answer-only/needs-code), make code changes first, then reply to every comment referencing the commit if applicable.
@@ -95,9 +92,9 @@ Respond to all open review comments on the current branch's PR. Follow the plan 
 Fetch all review comments and build a plan before touching anything:
 
 ```bash
-gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pulls/<PR>/comments \
+gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pulls/\<PR\>/comments \
   --jq '.[] | {id: .id, path: .path, line: .line, body: .body}'
-````
+```
 
 Group each comment into one of three buckets:
 
@@ -117,7 +114,7 @@ Output the plan to the user before proceeding.
 
   ```
   git commit -m "$(cat <<'EOF'
-  <message>
+  \<message\>
 
   Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
   EOF
@@ -133,7 +130,7 @@ Reply to **all** comments, even answer-only and deferred ones. Use the GitHub AP
 
 ```bash
 gh api repos/$(gh repo view --json nameWithOwner -q .nameWithOwner)/pulls/<PR>/comments/<ID>/replies \
-  -f body="<reply>"
+  -f body="\<reply\>"
 ```
 
 Reply templates by bucket:
@@ -158,11 +155,9 @@ Post all replies in parallel where the API allows.
 - Write commit SHAs bare (e.g. `abc1234`), never wrapped in backticks — GitHub autolinks bare SHAs but not inline code
 
 $ARGUMENTS
-
-```
+````
 
 Again Claude generates the template skill and then I fine-tune over time. For example, it was including the hashes in "`" which was causing the autolink to not work properly.
-
 
 ## Challenges with Skills
 
@@ -177,4 +172,3 @@ I'm of the opinion that developers should control their own workflows and we sho
 How do you use Claude Code and skills? Add suggestions below!
 
 <Comments />
-```
