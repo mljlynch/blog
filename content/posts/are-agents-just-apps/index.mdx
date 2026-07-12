@@ -1,0 +1,29 @@
+---
+title: Are agents just apps?
+date: 2026-07-12
+tags:
+  - AI-Agents
+  - Software-Architecture
+  - LLMs
+  - Product-Design
+---
+
+I've been wondering recently whether "agents" are just "apps". Slack recently changed its "Apps" section to "Agents & Apps". Is there really a difference?
+
+![Slack's sidebar section renamed to "Agents & apps"](./slack-agents-and-apps.png)
+
+Fig is a mobile application. If it starts integrating LLM features, does it become an agent? From a coding perspective, "agent" feels like a marketing name for an app with a new set of capabilities. That distinction matters, because if agents are just apps, then many traditional software principles still apply.
+
+One way to look at this is that agents are fundamentally different and require a new set of patterns. For example, chatbots and terminal harnesses let users call tools with freeform text and use the LLM to generate the commands. Claude Code is the most effective harness in my opinion, and the easiest to use, because the tools are built in and extensible. There could be other patterns too, such as agents that act on your behalf in response to an event. That's very similar to a webhook, which is an API for calling an application in response to an event. LLMs extend this because they can take a more loosely defined set of inputs and still call the right method.
+
+But if they are really the same thing, do we need new terminology for all of it? Does the MCP protocol define something new that couldn't be defined by an HTTP request? There are some additional controls over what can call a tool and which tools a tool can call in turn, but that can also be defined in an API. So is MCP just an interface for defining tool chaining?
+
+I think all this new naming has confused things more than it has helped. For example, there should be a simple pattern for teaching an LLM to call an API and generating a set of tools from the API docs. Why can't Swagger docs indicate which endpoints can be called by LLMs and have that enforced by tokens or keys?
+
+Similarly, with "agents" there's a proliferation of new text-based tools that don't provide a good user experience (except for developers), because they expose far too much surface area for inputting stuff. Inevitably, I think these tools will become more opinionated — but that will just be them looking more like traditional app patterns with an LLM twist. That's not to say LLMs aren't useful. It's just that the jump in language has made more things confusing than it has clarified.
+
+So, are agents just apps? My answer is yes. t framing is freeing, because it means the hard-won lessons of software still apply. I wonder if the "Agents & Apps" will change back to just "Apps" once we all get a little more used to LLM features.
+
+import Comments from "components/Comments";
+
+<Comments />
